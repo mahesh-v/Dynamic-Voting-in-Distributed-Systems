@@ -15,7 +15,7 @@ import sockets.InitiatingServer;
 import sockets.Server;
 import data.MyData;
 
-
+//test scontrol
 public class Controller {
 	
 	private static final int PORT_NUMBER = 5050;
