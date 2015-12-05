@@ -12,6 +12,44 @@ public class VoteManager {
 		List<Server> neighbors = MyData.getMyData().getNeighbors();
 		VoteData.getVoteData().setVN(1);
 		VoteData.getVoteData().setRU(neighbors.size());
+		updateDistinguishedSite(neighbors);
+		displayVoteData();
+	}
+
+	public static void displayVoteData() {
+		System.out.println("VN = "+VoteData.getVoteData().getVN());
+		System.out.println("RU = "+VoteData.getVoteData().getRU());
+		System.out.println("DS = "+VoteData.getVoteData().getDS());
+	}
+
+	public static void updateXIfAllVotesReceived() {
+		int num_of_votes_rcvd = VoteData.getVoteData().getVotesReceived().size();
+		if(num_of_votes_rcvd != MyData.getMyData().getNeighbors().size())
+			return;
+		int ru = VoteData.getVoteData().getRU();
+		if((num_of_votes_rcvd > ru/2)||
+			(ru%2 == 0 && num_of_votes_rcvd == ru/2 && VoteData.getVoteData().getVotesReceived().contains(VoteData.getVoteData().getDS()))){
+			System.out.println("Received majority votes. Need to update X!");
+			VoteData.getVoteData().incrementVersionNumber();
+			VoteData.getVoteData().setRU(num_of_votes_rcvd);
+			updateDistinguishedSite(MyData.getMyData().getNeighbors());
+			for (Server neighbor : MyData.getMyData().getNeighbors()) {
+				neighbor.sendObject("VN\t"+VoteData.getVoteData().getVN());
+				neighbor.sendObject("RU\t"+VoteData.getVoteData().getRU());
+				if(VoteData.getVoteData().getDS()!= null)
+					neighbor.sendObject("DS\t"+VoteData.getVoteData().getDS());
+				else
+					neighbor.sendObject("DS\tnull");
+			}
+			System.out.println("Write success");
+		}
+		else{
+			System.out.println("Write failed.");
+			return;
+		}
+	}
+
+	public static void updateDistinguishedSite(List<Server> neighbors) {
 		if(neighbors.size()%2!=0){//odd number of neighbors => even number of members in network.
 			char largestNodeLabel = MyData.getMyData().getMyNodeLabel();
 			for (Server server : neighbors) {
@@ -24,30 +62,5 @@ public class VoteManager {
 			VoteData.getVoteData().setDS(null);
 			
 		}
-		displayVoteData();
-	}
-
-	public static void displayVoteData() {
-		System.out.println("VN = "+VoteData.getVoteData().getVN());
-		System.out.println("RU = "+VoteData.getVoteData().getRU());
-		System.out.println("DS = "+VoteData.getVoteData().getDS());
-	}
-
-	public static void updateXIfAllVotesReceived() {
-		if(!VoteData.getVoteData().isWaitingForMajority())
-			return;
-		int ru = VoteData.getVoteData().getRU();
-		int numberOfVotes = VoteData.getVoteData().getVotesReceived().size();
-		if((numberOfVotes > ru/2)||
-			(ru%2 == 0 && numberOfVotes == ru/2 && VoteData.getVoteData().getVotesReceived().contains(VoteData.getVoteData().getDS()))){
-			System.out.println("Received majority votes. Need to update X!");
-		}
-		else{
-			return;
-		}
-		for (Server neighbor : MyData.getMyData().getNeighbors()) {
-			neighbor.sendObject("releasing_vote");
-		}
-		VoteData.getVoteData().setWaitingForMajority(false);
 	}
 }

@@ -57,25 +57,38 @@ public class MessageProcessor extends Thread {
 			VoteManager.displayVoteData();
 			System.out.print("> ");
 		}
-		else if(data.equalsIgnoreCase("releasing_vote")){
-			VoteData.getVoteData().setVoteGivenTo(null);
-		}
 		else if(data.startsWith("requesting_votes")){
-			if(VoteData.getVoteData().getVoteGivenTo() == null){
-				System.out.println("Sending vote to "+senderID);
-				MyData.getMyData().getNeighborNodeNum(senderID).sendObject("vote_granted");
-				String[] split = data.split("\t");
-				VoteData.getVoteData().setVoteGivenTo(split[1].charAt(0));
-			}
-			else{
-				System.out.println("Received request but not sending vote to "+senderID+" since vote already sent to "+VoteData.getVoteData().getVoteGivenTo());
-			}
+			System.out.println("Sending vote to "+senderID);
+			MyData.getMyData().getNeighborNodeNum(senderID).sendObject("vote_granted\t"+VoteData.getVoteData().getVN());
 			System.out.print("> ");
 		}
-		else if(data.equalsIgnoreCase("vote_granted")){
-			System.out.println("Received vote from "+senderID);
-			VoteData.getVoteData().getVotesReceived().add(senderID);
-			VoteManager.updateXIfAllVotesReceived();
+		else if(data.startsWith("vote_granted")){
+			String[] split = data.split("\t");
+			int rcvd_VN = Integer.parseInt(split[1]);
+			if(rcvd_VN==VoteData.getVoteData().getVN()){
+				System.out.println("Received valid vote from "+senderID);
+				VoteData.getVoteData().getVotesReceived().add(senderID);
+				VoteManager.updateXIfAllVotesReceived();
+			}
+		}
+		else if(data.startsWith("VN")){
+			String[] split = data.split("\t");
+			int vn = Integer.parseInt(split[1]);
+			VoteData.getVoteData().setVN(vn);
+		}
+		else if(data.startsWith("RU")){
+			String[] split = data.split("\t");
+			int ru = Integer.parseInt(split[1]);
+			VoteData.getVoteData().setRU(ru);
+		}
+		else if(data.startsWith("DS")){
+			String[] split = data.split("\t");
+			if(split[1].equalsIgnoreCase("null"))
+				VoteData.getVoteData().setDS(null);
+			else{
+				char ds = split[1].charAt(0);
+				VoteData.getVoteData().setDS(ds);
+			}
 		}
 		
 		

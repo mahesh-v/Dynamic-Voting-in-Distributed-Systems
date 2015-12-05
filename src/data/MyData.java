@@ -55,9 +55,6 @@ public class MyData {
 	}
 
 	public void removeNeighbor(char senderID) {
-		if(VoteData.getVoteData().getVoteGivenTo() != null && VoteData.getVoteData().getVoteGivenTo() == senderID){
-			VoteData.getVoteData().setVoteGivenTo(null);
-		}
 		synchronized (getNeighbors()) {
 			int mark = -1;
 			for (int i = getNeighbors().size()-1; i >= 0; i--) {

@@ -85,14 +85,8 @@ public class CLIController {
 				VoteManager.displayVoteData();
 			}
 			else if(line.toLowerCase().startsWith("request_votes")){
-				if(VoteData.getVoteData().getVoteGivenTo() != null){
-					System.out.println("Vote already granted for request "+VoteData.getVoteData().getVoteGivenTo());
-					System.out.println("Unable to process request until that is returned.");
-					continue;
-				}
 				System.out.println("Sending out requests for votes");
 				VoteData.getVoteData().incrementRequestCount();
-				VoteData.getVoteData().setWaitingForMajority(true);
 				VoteData.getVoteData().getVotesReceived().clear();
 				for (Server neighbor : MyData.getMyData().getNeighbors()) {
 					neighbor.sendObject("requesting_votes\t"+MyData.getMyData().getMyNodeLabel()+"_"+VoteData.getVoteData().getRequestCount());

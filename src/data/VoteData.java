@@ -10,8 +10,6 @@ public class VoteData {
 	private Character DS;
 	private HashSet<Character> votesReceived = new HashSet<Character>();
 	private int requestCount = 0;
-	private Character voteGivenTo = null;
-	private boolean waitingForMajority = false;
 	
 	public static VoteData getVoteData(){
 		return vData;
@@ -57,19 +55,7 @@ public class VoteData {
 		this.requestCount++;
 	}
 
-	public Character getVoteGivenTo() {
-		return voteGivenTo;
-	}
-
-	public void setVoteGivenTo(Character voteGivenTo) {
-		this.voteGivenTo = voteGivenTo;
-	}
-
-	public boolean isWaitingForMajority() {
-		return waitingForMajority;
-	}
-
-	public void setWaitingForMajority(boolean waitingForMajority) {
-		this.waitingForMajority = waitingForMajority;
+	public void incrementVersionNumber() {
+		this.VN++;
 	}
 }
