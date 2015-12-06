@@ -42,8 +42,7 @@ public class CLIController {
 				synchronized (neighbors) {
 					for (Server neighbor : neighbors) {
 						if(split[1].indexOf(neighbor.getNodeConnectedTo()) != -1){
-							System.out.println("Disonnceting from "+neighbor.getNodeConnectedTo());
-							neighbor.sendObject("disconnecting");
+							System.out.println("Disonnecting from "+neighbor.getNodeConnectedTo());
 							nodesToRemove.add(neighbor.getNodeConnectedTo());
 						}
 					}

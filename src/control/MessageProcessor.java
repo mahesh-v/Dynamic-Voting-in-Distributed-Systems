@@ -1,5 +1,4 @@
 package control;
-import sockets.Server;
 import data.Message;
 import data.MyData;
 import data.VoteData;
@@ -43,13 +42,7 @@ public class MessageProcessor extends Thread {
 //				}
 //			}
 //		}
-		if(data.equalsIgnoreCase("disconnecting")){
-			Server server = MyData.getMyData().getNeighborNodeNum(senderID);
-			if (server!=null){
-				server.close();
-			}
-		}
-		else if(data.equalsIgnoreCase("initialize")){
+		if(data.equalsIgnoreCase("initialize")){
 			VoteManager.initializeVoteData();
 			System.out.print("> ");
 		}
