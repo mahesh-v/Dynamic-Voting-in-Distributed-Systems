@@ -11,7 +11,7 @@ public class VoteManager {
 	public static void initializeVoteData(){
 		List<Server> neighbors = MyData.getMyData().getNeighbors();
 		VoteData.getVoteData().setVN(1);
-		VoteData.getVoteData().setRU(neighbors.size());
+		VoteData.getVoteData().setRU(neighbors.size()+1);
 		updateDistinguishedSite(neighbors);
 		displayVoteData();
 	}
