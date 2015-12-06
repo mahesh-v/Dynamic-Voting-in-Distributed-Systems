@@ -87,6 +87,7 @@ public class CLIController {
 				System.out.println("Sending out requests for votes");
 				VoteData.getVoteData().incrementRequestCount();
 				VoteData.getVoteData().getVotesReceived().clear();
+				VoteData.getVoteData().addToVotesReceived(MyData.getMyData().getMyNodeLabel());
 				for (Server neighbor : MyData.getMyData().getNeighbors()) {
 					neighbor.sendObject("requesting_votes\t"+MyData.getMyData().getMyNodeLabel()+"_"+VoteData.getVoteData().getRequestCount());
 				}

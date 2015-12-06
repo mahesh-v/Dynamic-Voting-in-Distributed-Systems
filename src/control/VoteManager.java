@@ -24,7 +24,7 @@ public class VoteManager {
 
 	public static void updateXIfAllVotesReceived() {
 		int num_of_votes_rcvd = VoteData.getVoteData().getVotesReceived().size();
-		if(num_of_votes_rcvd != MyData.getMyData().getNeighbors().size())
+		if(num_of_votes_rcvd != (MyData.getMyData().getNeighbors().size()+1))
 			return;
 		int ru = VoteData.getVoteData().getRU();
 		if((num_of_votes_rcvd > ru/2)||
