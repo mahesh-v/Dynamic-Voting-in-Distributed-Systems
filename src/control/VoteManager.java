@@ -31,7 +31,7 @@ public class VoteManager {
 			(ru%2 == 0 && num_of_votes_rcvd == ru/2 && VoteData.getVoteData().getVotesReceived().contains(VoteData.getVoteData().getDS()))){
 			System.out.println("Received majority votes. Need to update X!");
 			VoteData.getVoteData().incrementVersionNumber();
-			VoteData.getVoteData().setRU(num_of_votes_rcvd);
+			VoteData.getVoteData().setRU(num_of_votes_rcvd+1);
 			updateDistinguishedSite(MyData.getMyData().getNeighbors());
 			for (Server neighbor : MyData.getMyData().getNeighbors()) {
 				neighbor.sendObject("VN\t"+VoteData.getVoteData().getVN());
