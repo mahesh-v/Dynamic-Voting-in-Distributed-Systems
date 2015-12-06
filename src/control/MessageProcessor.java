@@ -58,11 +58,12 @@ public class MessageProcessor extends Thread {
 		else if(data.startsWith("vote_granted")){
 			String[] split = data.split("\t");
 			int rcvd_VN = Integer.parseInt(split[1]);
+			VoteData.getVoteData().addToTotalVotesReceived(senderID);
 			if(rcvd_VN==VoteData.getVoteData().getVN()){
 				System.out.println("Received valid vote from "+senderID);
-				VoteData.getVoteData().getVotesReceived().add(senderID);
-				VoteManager.updateXIfAllVotesReceived();
+				VoteData.getVoteData().getValidVotesReceived().add(senderID);
 			}
+			VoteManager.updateXIfAllVotesReceived();
 		}
 		else if(data.startsWith("VN")){
 			String[] split = data.split("\t");

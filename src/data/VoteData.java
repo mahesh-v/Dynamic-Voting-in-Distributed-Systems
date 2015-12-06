@@ -8,7 +8,8 @@ public class VoteData {
 	private int RU;
 	private int VN;
 	private Character DS;
-	private HashSet<Character> votesReceived = new HashSet<Character>();
+	private HashSet<Character> totalVotesReceived = new HashSet<Character>();
+	private HashSet<Character> validVotesReceived = new HashSet<Character>();
 	private int requestCount = 0;
 	
 	public static VoteData getVoteData(){
@@ -39,12 +40,12 @@ public class VoteData {
 		DS = dS;
 	}
 
-	public HashSet<Character> getVotesReceived() {
-		return votesReceived;
+	public HashSet<Character> getValidVotesReceived() {
+		return validVotesReceived;
 	}
 
-	public void addToVotesReceived(Character vote) {
-		this.votesReceived.add(vote);
+	public void addToValidVotesReceived(Character vote) {
+		this.validVotesReceived.add(vote);
 	}
 
 	public int getRequestCount() {
@@ -57,5 +58,13 @@ public class VoteData {
 
 	public void incrementVersionNumber() {
 		this.VN++;
+	}
+
+	public HashSet<Character> getTotalVotesReceived() {
+		return totalVotesReceived;
+	}
+
+	public void addToTotalVotesReceived(Character senderID) {
+		this.totalVotesReceived.add(senderID);
 	}
 }

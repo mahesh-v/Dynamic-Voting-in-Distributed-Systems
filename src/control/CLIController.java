@@ -86,8 +86,10 @@ public class CLIController {
 			else if(line.toLowerCase().startsWith("request_votes")){
 				System.out.println("Sending out requests for votes");
 				VoteData.getVoteData().incrementRequestCount();
-				VoteData.getVoteData().getVotesReceived().clear();
-				VoteData.getVoteData().addToVotesReceived(MyData.getMyData().getMyNodeLabel());
+				VoteData.getVoteData().getValidVotesReceived().clear();
+				VoteData.getVoteData().getTotalVotesReceived().clear();
+				VoteData.getVoteData().addToValidVotesReceived(MyData.getMyData().getMyNodeLabel());
+				VoteData.getVoteData().addToTotalVotesReceived(MyData.getMyData().getMyNodeLabel());
 				for (Server neighbor : MyData.getMyData().getNeighbors()) {
 					neighbor.sendObject("requesting_votes\t"+MyData.getMyData().getMyNodeLabel()+"_"+VoteData.getVoteData().getRequestCount());
 				}
@@ -96,7 +98,7 @@ public class CLIController {
 				for (Server neighbor : MyData.getMyData().getNeighbors()) {
 					neighbor.sendObject("releasing_vote");
 				}
-				VoteData.getVoteData().getVotesReceived().clear();
+				VoteData.getVoteData().getValidVotesReceived().clear();
 			}
 		}
 	}
