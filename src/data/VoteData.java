@@ -11,6 +11,9 @@ public class VoteData {
 	private HashSet<Character> totalVotesReceived = new HashSet<Character>();
 	private HashSet<Character> validVotesReceived = new HashSet<Character>();
 	private int requestCount = 0;
+	private int highestVersion;
+	private Character nodeWithHighestVersion;
+	private String contentToWrite;
 	
 	public static VoteData getVoteData(){
 		return vData;
@@ -66,5 +69,29 @@ public class VoteData {
 
 	public void addToTotalVotesReceived(Character senderID) {
 		this.totalVotesReceived.add(senderID);
+	}
+
+	public Character getNodeWithHighestVersion() {
+		return nodeWithHighestVersion;
+	}
+
+	public void setNodeWithHighestVersion(Character nodeWithHighestVersion) {
+		this.nodeWithHighestVersion = nodeWithHighestVersion;
+	}
+
+	public int getHighestVersion() {
+		return highestVersion;
+	}
+
+	public void setHighestVersion(int highestVersion) {
+		this.highestVersion = highestVersion;
+	}
+
+	public String getContentToWrite() {
+		return contentToWrite;
+	}
+
+	public void setContentToWrite(String contentToWrite) {
+		this.contentToWrite = contentToWrite;
 	}
 }

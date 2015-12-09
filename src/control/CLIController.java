@@ -84,15 +84,7 @@ public class CLIController {
 				VoteManager.displayVoteData();
 			}
 			else if(line.toLowerCase().startsWith("request_votes")){
-				System.out.println("Sending out requests for votes");
-				VoteData.getVoteData().incrementRequestCount();
-				VoteData.getVoteData().getValidVotesReceived().clear();
-				VoteData.getVoteData().getTotalVotesReceived().clear();
-				VoteData.getVoteData().addToValidVotesReceived(MyData.getMyData().getMyNodeLabel());
-				VoteData.getVoteData().addToTotalVotesReceived(MyData.getMyData().getMyNodeLabel());
-				for (Server neighbor : MyData.getMyData().getNeighbors()) {
-					neighbor.sendObject("requesting_votes\t"+MyData.getMyData().getMyNodeLabel()+"_"+VoteData.getVoteData().getRequestCount());
-				}
+				requestVotes();
 			}
 			else if(line.toLowerCase().startsWith("release_votes")){
 				for (Server neighbor : MyData.getMyData().getNeighbors()) {
@@ -100,6 +92,29 @@ public class CLIController {
 				}
 				VoteData.getVoteData().getValidVotesReceived().clear();
 			}
+			else if(line.toLowerCase().startsWith("write")){
+				String[] split = line.split("\t");
+				if(split.length<2){
+					System.out.println("Must specify content to write (separated by a tab)");
+					continue;
+				}
+				VoteData.getVoteData().setContentToWrite(split[1]);
+				requestVotes();
+			}
+		}
+	}
+
+	public void requestVotes() {
+		System.out.println("Sending out requests for votes");
+		VoteData.getVoteData().incrementRequestCount();
+		VoteData.getVoteData().getValidVotesReceived().clear();
+		VoteData.getVoteData().getTotalVotesReceived().clear();
+		VoteData.getVoteData().addToValidVotesReceived(MyData.getMyData().getMyNodeLabel());
+		VoteData.getVoteData().addToTotalVotesReceived(MyData.getMyData().getMyNodeLabel());
+		VoteData.getVoteData().setNodeWithHighestVersion(null);
+		VoteData.getVoteData().setHighestVersion(VoteData.getVoteData().getVN());
+		for (Server neighbor : MyData.getMyData().getNeighbors()) {
+			neighbor.sendObject("requesting_votes\t"+MyData.getMyData().getMyNodeLabel()+"_"+VoteData.getVoteData().getRequestCount());
 		}
 	}
 

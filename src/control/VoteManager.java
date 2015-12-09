@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import sockets.Server;
@@ -18,7 +21,7 @@ public class VoteManager {
 		VoteData.getVoteData().setRU(neighbors.size()+1);
 		updateDistinguishedSite(neighbors);
 		displayVoteData();
-		File X = new File("X.txt");
+		File X = new File(MyData.getMyData().getMyNodeLabel()+File.separator+"X.txt");
 		if(X.exists()){
 			X.delete();
 		}
@@ -37,7 +40,12 @@ public class VoteManager {
 		int ru = VoteData.getVoteData().getRU();
 		if((num_of_votes_rcvd > ru/2)||
 			(ru%2 == 0 && num_of_votes_rcvd == ru/2 && VoteData.getVoteData().getValidVotesReceived().contains(VoteData.getVoteData().getDS()))){
-			System.out.println("Received majority votes. Need to update X!");
+			System.out.println("Received majority votes. Updating X...");
+			if(VoteData.getVoteData().getNodeWithHighestVersion()!= null){
+				updateXFromHighestNeighbor(VoteData.getVoteData().getNodeWithHighestVersion());
+				while(VoteData.getVoteData().getNodeWithHighestVersion() != null){}
+			}
+			
 			VoteData.getVoteData().incrementVersionNumber();
 			
 			//ru should be set to total neighbours + 1 because we will be updating all neighbours + , not just valid neighbours.
@@ -47,15 +55,14 @@ public class VoteManager {
 //			VoteData.getVoteData().setRU(num_of_votes_rcvd);
 			
 			updateDistinguishedSite(MyData.getMyData().getNeighbors());
-			for (Server neighbor : MyData.getMyData().getNeighbors()) {
-				neighbor.sendObject("VN\t"+VoteData.getVoteData().getVN());
-				neighbor.sendObject("RU\t"+VoteData.getVoteData().getRU());
-				if(VoteData.getVoteData().getDS()!= null)
-					neighbor.sendObject("DS\t"+VoteData.getVoteData().getDS());
-				else
-					neighbor.sendObject("DS\tnull");
+			if(!Files.exists(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator))){
+				try {
+					Files.createDirectories(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator));
+				} catch (IOException e) {
+					System.err.println("Error creating directories: "+e.getMessage());
+				}
 			}
-			File X = new File("X.txt");
+			File X = new File(MyData.getMyData().getMyNodeLabel()+File.separator+"X.txt");
 			if(!X.exists()){
 				try {
 					X.createNewFile();
@@ -64,10 +71,21 @@ public class VoteManager {
 				}
 			}
 			try(BufferedWriter bw = new BufferedWriter(new FileWriter(X, true))){
-				bw.append("Version no:"+VoteData.getVoteData().getVN()+": Writing from "+MyData.getMyData().getMyNodeLabel()+"\r\n");
+				bw.append(VoteData.getVoteData().getContentToWrite());
 			} catch (IOException e) {
 				System.err.println("IOException when writing to file X: "+e.getMessage());
 			}
+			for (Server neighbor : MyData.getMyData().getNeighbors()) {
+				neighbor.sendObject("VN\t"+VoteData.getVoteData().getVN());
+				neighbor.sendObject("RU\t"+VoteData.getVoteData().getRU());
+				if(VoteData.getVoteData().getDS()!= null)
+					neighbor.sendObject("DS\t"+VoteData.getVoteData().getDS());
+				else
+					neighbor.sendObject("DS\tnull");
+				List<String> lines = readX();
+				neighbor.sendObject(lines);
+			}
+			
 			System.out.println("Write success");
 		}
 		else{
@@ -77,6 +95,26 @@ public class VoteManager {
 			neighbor.sendObject("display_vote_data");
 		}
 		displayVoteData();
+	}
+	
+	private static List<String> readX() {
+		try {
+			if(!Files.exists(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator))){
+				Files.createDirectories(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator));
+			}
+			List<String> lines = Files.readAllLines(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator+"X.txt"));
+			if(lines!=null)
+				return lines;
+		} catch (IOException e) {
+			System.err.println("Error while reading from file X: "+e.getMessage());
+		}
+		return new ArrayList<String>();
+	}
+
+	public static void updateXFromHighestNeighbor(Character nodeWithHighestVersion) {
+		if(nodeWithHighestVersion == null)
+			return;
+		MyData.getMyData().getNeighborNodeNum(nodeWithHighestVersion).sendObject("requesting_X");
 	}
 
 	public static void updateDistinguishedSite(List<Server> neighbors) {
