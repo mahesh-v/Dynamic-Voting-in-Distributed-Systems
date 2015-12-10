@@ -11,6 +11,7 @@ The zip file contains:
 2. The ANT build xml file to make the executable jar
 3. The output files (expected report is present at the end of each output file)
 4. This report file
+5. The jar file (located in dist folder)
 
 The jar is to be executed as:
 prompt> java -jar AOS3.jar <node_label>
