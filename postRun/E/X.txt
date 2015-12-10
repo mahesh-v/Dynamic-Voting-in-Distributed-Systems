@@ -1,0 +1,8 @@
+write at A
+Write at F
+Write at F
+Write at H
+write at F
+write at E
+Write at G
+Write at B

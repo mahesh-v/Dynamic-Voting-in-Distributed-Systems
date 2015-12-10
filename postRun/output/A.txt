@@ -1,0 +1,51 @@
+Accepting at port: 5050
+> Connection established with nodeB
+> Connection established with nodeC
+> Connection established with nodeD
+> Connection established with nodeE
+> Connection established with nodeF
+> Connection established with nodeG
+> Connection established with nodeH
+> Must specify content to write (separated by a tab)
+> Sending out requests for votes
+Received valid vote from B
+> Received valid vote from C
+Received valid vote from F
+Received valid vote from E
+Received valid vote from D
+Received valid vote from G
+Received valid vote from H
+Received majority votes. Updating X...
+Write success
+VN = 1
+RU = 8
+DS = H
+Sending vote to F
+> VN = 2
+RU = 8
+DS = H
+> Disconnecting...
+Disonnecting from E
+Disonnecting from F
+Disonnecting from G
+Disonnecting from H
+> Sending out requests for votes
+> Received valid vote from B
+Received valid vote from D
+Received valid vote from C
+Write failed.
+VN = 2
+RU = 8
+DS = H
+Sending vote to C
+> VN = 2
+RU = 8
+DS = H
+> Disconnecting...
+Disonnecting from B
+Disonnecting from C
+Disonnecting from D
+> Sending out requests for votes
+> My neighbors are: 
+> 
+Closing socket at port 5050

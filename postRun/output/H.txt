@@ -1,0 +1,71 @@
+Accepting at port: 5050
+
+Initiated connection successfully to dc21.utdallas.edu at port 5050
+> 
+Initiated connection successfully to dc22.utdallas.edu at port 5050
+> 
+Initiated connection successfully to dc23.utdallas.edu at port 5050
+> 
+Initiated connection successfully to dc24.utdallas.edu at port 5050
+> 
+Initiated connection successfully to dc25.utdallas.edu at port 5050
+> 
+Initiated connection successfully to dc36.utdallas.edu at port 5050
+> Did not send: CONNECT_ME	H to F
+
+Initiated connection successfully to dc27.utdallas.edu at port 5050
+> > My neighbors are: 
+A at dc21.utdallas.edu
+B at dc22.utdallas.edu
+C at dc23.utdallas.edu
+D at dc24.utdallas.edu
+E at dc25.utdallas.edu
+F at dc36.utdallas.edu
+G at dc27.utdallas.edu
+> Disconnecting...
+Disonnecting from F
+> My neighbors are: 
+A at dc21.utdallas.edu
+B at dc22.utdallas.edu
+C at dc23.utdallas.edu
+D at dc24.utdallas.edu
+E at dc25.utdallas.edu
+G at dc27.utdallas.edu
+> Connection established with nodeF
+> My neighbors are: 
+A at dc21.utdallas.edu
+B at dc22.utdallas.edu
+C at dc23.utdallas.edu
+D at dc24.utdallas.edu
+E at dc25.utdallas.edu
+G at dc27.utdallas.edu
+F at dc36.utdallas.edu
+> Sending vote to A
+> VN = 1
+RU = 8
+DS = H
+> Sending vote to F
+> VN = 2
+RU = 8
+DS = H
+> Sending vote to F
+> VN = 3
+RU = 4
+DS = H
+> Must specify content to write (separated by a tab)
+> Sending out requests for votes
+> Received valid vote from E
+Received valid vote from G
+Received valid vote from F
+Received majority votes. Updating X...
+Write success
+VN = 4
+RU = 4
+DS = H
+Disconnecting...
+Disonnecting from E
+Disonnecting from G
+Disonnecting from F
+> My neighbors are: 
+> 
+Closing socket at port 5050
