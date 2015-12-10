@@ -98,6 +98,7 @@ public class CLIController {
 					System.out.println("Must specify content to write (separated by a tab)");
 					continue;
 				}
+				System.out.println("Attempting to write: \""+split[1]+"\"");
 				VoteData.getVoteData().setContentToWrite(split[1]);
 				requestVotes();
 			}
@@ -107,6 +108,14 @@ public class CLIController {
 	public void requestVotes() {
 		System.out.println("Sending out requests for votes");
 		VoteData.getVoteData().incrementRequestCount();
+		if(MyData.getMyData().getNeighbors().size() == 0){
+			if(VoteData.getVoteData().getRU()>1)
+				System.out.println("Write failed.");
+			else if(VoteData.getVoteData().getRU() == 1){
+				VoteManager.updateXIfAllVotesReceived();
+			}
+			return;
+		}
 		VoteData.getVoteData().getValidVotesReceived().clear();
 		VoteData.getVoteData().getTotalVotesReceived().clear();
 		VoteData.getVoteData().addToValidVotesReceived(MyData.getMyData().getMyNodeLabel());

@@ -27,7 +27,7 @@ public class InitiatingServer {
 			server.setNodeConnectedTo(nodeConnectedTo);
 			server.setName("ThreadTo"+nodeConnectedTo);
 			server.start();
-			Thread.sleep(200);//to establish conn
+			Thread.sleep(500);//to establish conn
 			MyData.getMyData().getNeighbors().add(server);
 			server.sendObject("CONNECT_ME\t"+MyData.getMyData().getMyNodeLabel());
 			return server;

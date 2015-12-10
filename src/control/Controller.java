@@ -18,7 +18,7 @@ import data.MyData;
 //test scontrol
 public class Controller {
 	
-	private static final int PORT_NUMBER = 5050;
+	private static final int PORT_NUMBER = 5030;
 	private static final String NETWORK_NODES_FILE = "NetworkNodes.txt";
 
 	public static void main(String[] args) throws UnknownHostException {

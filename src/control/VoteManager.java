@@ -55,26 +55,7 @@ public class VoteManager {
 //			VoteData.getVoteData().setRU(num_of_votes_rcvd);
 			
 			updateDistinguishedSite(MyData.getMyData().getNeighbors());
-			if(!Files.exists(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator))){
-				try {
-					Files.createDirectories(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator));
-				} catch (IOException e) {
-					System.err.println("Error creating directories: "+e.getMessage());
-				}
-			}
-			File X = new File(MyData.getMyData().getMyNodeLabel()+File.separator+"X.txt");
-			if(!X.exists()){
-				try {
-					X.createNewFile();
-				} catch (IOException e) {
-					System.err.println("IOException when creating file X: "+e.getMessage());
-				}
-			}
-			try(BufferedWriter bw = new BufferedWriter(new FileWriter(X, true))){
-				bw.append(VoteData.getVoteData().getContentToWrite());
-			} catch (IOException e) {
-				System.err.println("IOException when writing to file X: "+e.getMessage());
-			}
+			writeToX();
 			for (Server neighbor : MyData.getMyData().getNeighbors()) {
 				neighbor.sendObject("VN\t"+VoteData.getVoteData().getVN());
 				neighbor.sendObject("RU\t"+VoteData.getVoteData().getRU());
@@ -95,6 +76,29 @@ public class VoteManager {
 			neighbor.sendObject("display_vote_data");
 		}
 		displayVoteData();
+	}
+
+	public static void writeToX() {
+		if(!Files.exists(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator))){
+			try {
+				Files.createDirectories(Paths.get(MyData.getMyData().getMyNodeLabel()+File.separator));
+			} catch (IOException e) {
+				System.err.println("Error creating directories: "+e.getMessage());
+			}
+		}
+		File X = new File(MyData.getMyData().getMyNodeLabel()+File.separator+"X.txt");
+		if(!X.exists()){
+			try {
+				X.createNewFile();
+			} catch (IOException e) {
+				System.err.println("IOException when creating file X: "+e.getMessage());
+			}
+		}
+		try(BufferedWriter bw = new BufferedWriter(new FileWriter(X, true))){
+			bw.append(VoteData.getVoteData().getContentToWrite());
+		} catch (IOException e) {
+			System.err.println("IOException when writing to file X: "+e.getMessage());
+		}
 	}
 	
 	private static List<String> readX() {
